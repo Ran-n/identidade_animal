@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------------------------
 #+ Autor:   Ran#
 #+ Creado:  24/03/2021 19:04:19
-#+ Editado:	23/07/2021 22:50:26
+#+ Editado:	24/07/2021 00:16:21
 #------------------------------------------------------------------------------------------------
 
 import sys
@@ -54,7 +54,9 @@ from uteis import ficheiro
 
 # para que me devolva 032 e non 32
 def nomenclar(numero):
-  if len(str(numero)) == 2:
+  if len(str(numero)) == 1:
+    return '00'+str(numero)
+  elif len(str(numero)) == 2:
     return '0'+str(numero)
   return str(numero)
 
@@ -168,7 +170,6 @@ if __name__=='__main__':
     print('semente:\t\t', SEMENTE)
     print('% train-val-test:\t {} - {} - {}'.format(CANTIDADES[0], CANTIDADES[1], CANTIDADES[2]))
     print('---------------------------------------------------------------------------------------------------')
-    print()
 
     ficheiro.gardarJson(FICHEIRO+'.parametros',
         {
@@ -295,6 +296,10 @@ if __name__=='__main__':
     # mostra a información sobre o modelo
     modelo.summary()
 
+    print()
+    print('* Adestrando *')
+    print()
+
     # facemos o fit do modelo
     historia = modelo.fit(
         train_ds,
@@ -312,20 +317,20 @@ if __name__=='__main__':
 
     plt.figure(figsize=(8, 8))
     plt.subplot(1, 2, 1)
-    plt.plot(epochs_range, acc, label='Entrenamento')
+    plt.plot(epochs_range, acc, label='Adestramento')
     plt.plot(epochs_range, val_acc, label='Validación')
 
     plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=5)
 
-    plt.title('Precisión de entrenamento e validación')
+    plt.title('Precisión de adestramento e validación')
 
     plt.subplot(1, 2, 2)
-    plt.plot(epochs_range, loss, label='Entrenamento')
+    plt.plot(epochs_range, loss, label='Adestramento')
     plt.plot(epochs_range, val_loss, label='Validación')
 
     plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=5)
 
-    plt.title('Perda de entrenamento e validación')
+    plt.title('Perda de adestramento e validación')
 
     # gardamos a gráfica
     for extension in ['png', 'svg', 'pdf']:
@@ -337,15 +342,35 @@ if __name__=='__main__':
     ficheiro.gardarFich(FICHEIRO+'.clases', nome_clases)
     ficheiro.gardarJson(FICHEIRO+'.historia', historia.history)
 
-    print('----------------------------------')
-    print('Gardada visualización e modelo baixo o nome: ', NOMENCLATURA)
-    print('----------------------------------')
+    plt.figure(figsize=(8, 8))
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs_range, acc, label='$\\itTrain$')
+    plt.plot(epochs_range, val_acc, label='$\\itValidation$')
+
+    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=5)
+
+    plt.title('Precisión de $\\it{}$ e $\\it{}$'.format('train', 'validation'))
+
+    plt.subplot(1, 2, 2)
+    plt.plot(epochs_range, loss, label='$\\itTrain$')
+    plt.plot(epochs_range, val_loss, label='$\\itValidation$')
+
+    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=5)
+
+    plt.title('Perda de $\\it{}$ e $\\it{}$'.format('train', 'validation'))
+
+    # gardamos a gráfica
+    for extension in ['png', 'svg', 'pdf']:
+        plt.savefig(FICHEIRO+' [en].'+extension, format=extension)
+
 
     '''
     TEST
     '''
 
+    print()
     print('* Predicindo *')
+    print()
 
     prediccions = {
         'Dataset 32':{
@@ -460,5 +485,9 @@ if __name__=='__main__':
     ficheiro.gardarJson(FICHEIRO+'.metricas', metricas, indent=4)
     ficheiro.gardarJson(FICHEIRO+'.cronoloxia', cronoloxia, indent=4)
     ficheiro.gardarJson(FICHEIRO+'.avaliacion', avaliacion,indent=4)
+
+    print()
+    print('* Documentos gardados baixo o nome: {} *'.format(NOMENCLATURA))
+    print()
 
 #------------------------------------------------------------------------------------------------
