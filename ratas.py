@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------------------------
 #+ Autor:   Ran#
 #+ Creado:  24/03/2021 19:04:19
-#+ Editado:	24/07/2021 00:16:21
+#+ Editado:	24/07/2021 00:39:06
 #------------------------------------------------------------------------------------------------
 
 import sys
@@ -17,7 +17,7 @@ __args = sys.argv[1:]
 if ('-a' in __args) or ('-h' in __args) or ('?' in __args) or ('-?' in __args) or (len(__args) == 0):
     print('\nAxuda -----------')
 
-    print('-h/-a\t\t-> Para esta mensaxe')
+    print('?/-h/-a\t\t-> Para esta mensaxe')
     print()
     print('-d num\t\t-> dimensións\t\t\t\t\t(32x32)')
     print('-e num\t\t-> epochs\t\t\t\t\t(20)')
