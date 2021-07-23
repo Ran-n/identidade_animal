@@ -1,7 +1,7 @@
 #! /bin/sh
 #+ Autor:	Ran#
 #+ Creado:	24/07/2021 00:19:42
-#+ Editado:	24/07/2021 00:31:40
+#+ Editado:	24/07/2021 00:32:50
 
 case $1 in
     's')
