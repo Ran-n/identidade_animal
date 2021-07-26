@@ -1,9 +1,9 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 #------------------------------------------------------------------------------------------------
-#+ Autor:   Ran#
-#+ Creado:  24/03/2021 19:04:19
-#+ Editado:	24/07/2021 12:24:51
+#+ Autor:	Ran#
+#+ Creado:	15/04/2021 18:20:18
+#+ Editado:	26/07/2021 13:14:16
 #------------------------------------------------------------------------------------------------
 
 import sys
@@ -12,46 +12,44 @@ import sys
 # miramos se ten entradas por comando e se as ten os valores deben ser postos a tal
 # quitamos a primeira
 __args = sys.argv[1:]
-
-# mensaxe de axuda
 if ('-a' in __args) or ('-h' in __args) or ('?' in __args) or ('-?' in __args) or (len(__args) == 0):
     print('\nAxuda -----------')
-
-    print('?/-h/-a\t\t-> Para esta mensaxe')
+    print('-h/-a/?\t\t-> Para esta mensaxe')
     print()
-    print('-d num\t\t-> dimensións\t\t\t\t\t(32x32)')
     print('-e num\t\t-> epochs\t\t\t\t\t(20)')
     print('-b num\t\t-> batch size\t\t\t\t\t(32)')
     print('-v num\t\t-> Distribución dos % train-val-test\t\t(80-10-10)')
     print('-s num\t\t-> semente\t\t\t\t\t(1)')
-    
     print('----------------\n')
-    
+
     if len(__args) != 0:
         sys.exit()
 
-import matplotlib.pyplot as plt
-import numpy as np
-import secrets
 import os
 # eliminar os warnings de tensorflow
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
-import PIL
-import json
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+import matplotlib.pyplot as plt
 import pathlib
 from pathlib import Path
+import numpy as np
+import json
+import secrets
+import math
+
 import tensorflow as tf
 
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.preprocessing import image_dataset_from_directory
-import math
+
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras import Model
+from tensorflow.keras.applications.vgg16 import VGG16
 
 from uteis import ficheiro
 
 #------------------------------------------------------------------------------------------------
-
 # para que me devolva 032 e non 32
 def nomenclar(numero):
   if len(str(numero)) == 1:
@@ -66,18 +64,9 @@ def r3(a, b, c):
 
 # función encargada de darlle sentido ás opcións de entrada
 def lecturaOpcions(args):
-    # altura da imaxe
-    if '-d' in args:
-        DIMENSIONS = args[args.index('-d')+1]
-        if 'x' in DIMENSIONS:
-            ALTURA_IMAXE, ANCHURA_IMAXE = [int(dimension) for dimension in DIMENSIONS.split('x')]
-        else: 
-            ALTURA_IMAXE = ANCHURA_IMAXE = int(DIMENSIONS)
-            DIMENSIONS = DIMENSIONS+'x'+DIMENSIONS
-    else:
-        # 128, 64 ou 32
-        ALTURA_IMAXE = ANCHURA_IMAXE = 32
-        DIMENSIONS = str(ALTURA_IMAXE)+'x'+str(ANCHURA_IMAXE)
+    # tan só se pode entrenar con estas dimensións
+    ALTURA_IMAXE = ANCHURA_IMAXE = 224
+    DIMENSIONS = '224x224'
 
     # epochs que se realizan
     if '-e' in args:
@@ -94,13 +83,12 @@ def lecturaOpcions(args):
     # porcentaxe a usar para a validación
     if '-v' in args:
         try:
-            CANTIDADES = [int(ele) for ele in args[args.index('-v')+1].split('-')]
+            CANTIDADES = [int(ele)/100 for ele in args[args.index('-v')+1]]
         except:
             raise
 
         # se non dan un erro
-        assert(sum(CANTIDADES) == 100)
-        CANTIDADES = [ele/100 for ele in CANTIDADES]
+        assert(sum(CANTIDADES) == 1)
     else:
         CANTIDADES = [0.8, 0.1, 0.1]
 
@@ -115,24 +103,25 @@ def lecturaOpcions(args):
 #------------------------------------------------------------------------------------------------
 
 # main
-if __name__=='__main__':
-    # ler as opcións de entrada
+if __name__ == '__main__':
     DIMENSIONS, ALTURA_IMAXE, ANCHURA_IMAXE, EPOCHS, BATCH_SIZE, CANTIDADES, SEMENTE = lecturaOpcions(__args)
     NOMENCLATURA = 'dataset-ratas_'+nomenclar(ALTURA_IMAXE)+';epochs_'+nomenclar(EPOCHS)+';batch-size_'+nomenclar(BATCH_SIZE)+';semente_'+nomenclar(SEMENTE)+'___'+str(secrets.token_hex(4))
-    CARPETA = 'saidas/ratas_pecusCNN/'+NOMENCLATURA
+    CARPETA = 'saidas/ratas_vgg16/'+NOMENCLATURA
     FICHEIRO = CARPETA+'/'+NOMENCLATURA
-
+    
     # dicc cos distintos datasets de proba a usar
     test_ds = {
         '32': None,
         '64': None,
-        '128': None
+        '128': None,
+        '224': None
     }
 
     cant_imaxes_test = {
         '32': None,
         '64': None,
-        '128': None
+        '128': None,
+        '224': None
     }
 
     '''
@@ -159,8 +148,7 @@ if __name__=='__main__':
     nome_clases = ds.class_names
 
     # mostra a mensaxe de información sobre a configuración usada para a creación do modelo
-    print()
-    print('Configuración a usar:')
+    print('\nConfiguración a usar:')
     print('---------------------------------------------------------------------------------------------------')
     print('nomenclatura:\t\t', NOMENCLATURA)
     print('dimensións:\t\t', DIMENSIONS)
@@ -201,25 +189,29 @@ if __name__=='__main__':
     test_ds[str(ALTURA_IMAXE)] = remaining.skip(tamanho_valid_ds)
 
     # sacar os tests do resto, coa mesma cantidade de imaxes
+    # non poño 224 porque o ese test set sempre é o que collo primeiro
+    # pq non se pode adestrar con outro
     for ele in ['32', '64', '128']:
-        if ele != ALTURA_IMAXE:
-            data_dir2 = tf.keras.utils.get_file(
-                                       'Dataset_Ratas_'+str(ele)+'x'+str(ele),
-                                        origin='https://bucketfg.blob.core.windows.net/datasets2/Dataset_Ratas_'+str(ele)+'x'+str(ele)+'.tar.gz',
-                                        untar=True)
-            data_dir2 = pathlib.Path(data_dir2)
+        # non fai falla o if do ratas normal porque as dimensións 224 sempre van ser
+        # as primeiras en ser cargadas e non fai falla poñelas no bucle
+        data_dir2 = tf.keras.utils.get_file(
+                                   'Dataset_Ratas_'+str(ele)+'x'+str(ele),
+                                    origin='https://bucketfg.blob.core.windows.net/datasets2/Dataset_Ratas_'+str(ele)+'x'+str(ele)+'.tar.gz',
+                                    untar=True)
+        data_dir2 = pathlib.Path(data_dir2)
 
-            print()
-            print('* Baixando tamén o dataset {0}x{0} para sacar o conxunto de proba deste *'.format(ele))
-            ds2 = image_dataset_from_directory(
-                    data_dir2,
-                    seed=SEMENTE,
-                    image_size=(ALTURA_IMAXE, ANCHURA_IMAXE),
-                    batch_size=BATCH_SIZE
-            )
+        print()
+        print('\n* Baixando tamén o dataset {0}x{0} para sacar o conxunto de proba deste *'.format(ele))
+        ds2 = image_dataset_from_directory(
+                data_dir2,
+                seed=SEMENTE,
+                #image_size=(int(ele), int(ele)),
+                image_size=(ALTURA_IMAXE, ANCHURA_IMAXE),
+                batch_size=BATCH_SIZE
+        )
 
-            test_ds[ele] = ds2.take(tamanho_test_ds)
-            cant_imaxes_test[ele] = len(np.concatenate([i for x, i in test_ds[ele]], axis=0))
+        test_ds[ele] = ds2.take(tamanho_test_ds)
+        cant_imaxes_test[ele] = len(np.concatenate([i for x, i in test_ds[ele]], axis=0))
 
     cant_imaxes_train = len(np.concatenate([i for x, i in train_ds], axis=0))
     cant_imaxes_valid = len(np.concatenate([i for x, i in valid_ds], axis=0))
@@ -261,30 +253,21 @@ if __name__=='__main__':
     train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
     valid_ds = valid_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
-    # CREACIÓN da rede PecusCNN
-    modelo = Sequential([
-        # as cores van do 0 ao 255, con isto fai que vaian do 0 ó 1
-        # faise en todos pero tamén nestas en branco e negro polos todos de grises
-        layers.experimental.preprocessing.Rescaling(1./255, input_shape=(ALTURA_IMAXE, ANCHURA_IMAXE, 3)),
+    # CREACIÓN da rede VGG16
+    base_model = VGG16(input_shape = (224, 224, 3), include_top = False, weights = 'imagenet')
+    base_model.summary()
 
-        # bloque 1
-        layers.Conv2D(16, 3, padding='same', activation='relu'),
-        layers.MaxPooling2D(),
+    for layer in base_model.layers:
+        layer.trainable = False
 
-        # bloque 2
-        layers.Conv2D(32, 3, padding='same', activation='relu'),
-        layers.MaxPooling2D(),
 
-        # bloque3
-        layers.Conv2D(64, 3, padding='same', activation='relu'),
-        layers.MaxPooling2D(),
+    x = layers.Flatten(name = "flatten")(base_model.output)
+    x = layers.Dense(512, activation='relu')(x)
+    x = layers.Dropout(0.5)(x)
+    x = layers.Dense(len(nome_clases))(x)
 
-        # cabeza
-        layers.Flatten(),
-        layers.Dense(128, activation='relu'),
-        layers.Dense(len(nome_clases))
-    ])
-    # CREACIÓN da rede PecusCNN #
+    modelo = tf.keras.models.Model(inputs=base_model.input, outputs=x)
+    # CREACIÓN da rede VGG16 #
 
     # compilar o modelo
     modelo.compile(
@@ -294,7 +277,7 @@ if __name__=='__main__':
     )
 
     # mostra a información sobre o modelo
-    modelo.summary()
+    #modelo.summary()
 
     print()
     print('* Adestrando *')
@@ -317,20 +300,20 @@ if __name__=='__main__':
 
     plt.figure(figsize=(8, 8))
     plt.subplot(1, 2, 1)
-    plt.plot(epochs_range, acc, label='Adestramento')
+    plt.plot(epochs_range, acc, label='Entrenamento')
     plt.plot(epochs_range, val_acc, label='Validación')
 
     plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=5)
 
-    plt.title('Precisión de adestramento e validación')
+    plt.title('Precisión de entrenamento e validación')
 
     plt.subplot(1, 2, 2)
-    plt.plot(epochs_range, loss, label='Adestramento')
+    plt.plot(epochs_range, loss, label='Entrenamento')
     plt.plot(epochs_range, val_loss, label='Validación')
 
     plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=5)
 
-    plt.title('Perda de adestramento e validación')
+    plt.title('Perda de entrenamento e validación')
 
     # gardamos a gráfica
     for extension in ['png', 'svg', 'pdf']:
@@ -364,11 +347,9 @@ if __name__=='__main__':
     for extension in ['png', 'svg', 'pdf']:
         plt.savefig(FICHEIRO+' [en].'+extension, format=extension)
 
-
     '''
     TEST
     '''
-
     print()
     print('* Predicindo *')
     print()
@@ -391,6 +372,12 @@ if __name__=='__main__':
             'speedy': {'acertos': 0, 'erros': 0, 'total': 0, 'porcentaxes': {'acertos': 0, 'erros': 0}},
             'total imaxes': 0,
             'porcentaxes imaxes': {'gonzales': 0, 'speedy': 0},
+            'media porcentaxes': {'acertos': 0, 'erros': 0}},
+        'Dataset 224':{
+            'gonzales': {'acertos': 0, 'erros': 0, 'total': 0, 'porcentaxes': {'acertos': 0, 'erros': 0}},
+            'speedy': {'acertos': 0, 'erros': 0, 'total': 0, 'porcentaxes': {'acertos': 0, 'erros': 0}},
+            'total imaxes': 0,
+            'porcentaxes imaxes': {'gonzales': 0, 'speedy': 0},
             'media porcentaxes': {'acertos': 0, 'erros': 0}}
     }
 
@@ -400,22 +387,26 @@ if __name__=='__main__':
         'Dataset 64':{'gonzales': {'cronoloxía': [], 'confianza': []},
                         'speedy': {'cronoloxía': [], 'confianza': []}},
         'Dataset 128':{'gonzales': {'cronoloxía': [], 'confianza': []},
+                        'speedy': {'cronoloxía': [], 'confianza': []}},
+        'Dataset 224':{'gonzales': {'cronoloxía': [], 'confianza': []},
                         'speedy': {'cronoloxía': [], 'confianza': []}}
     }
 
     metricas = {
         'Dataset 32': {'tp|fn|tn|fp': '', 'accuracy': 0, 'precision': 0, 'recall': 0, 'f': 0, 'fpr': 0},
         'Dataset 64': {'tp|fn|tn|fp': '', 'accuracy': 0, 'precision': 0, 'recall': 0, 'f': 0, 'fpr': 0},
-        'Dataset 128': {'tp|fn|tn|fp': '', 'accuracy': 0, 'precision': 0, 'recall': 0, 'f': 0, 'fpr': 0}
+        'Dataset 128': {'tp|fn|tn|fp': '', 'accuracy': 0, 'precision': 0, 'recall': 0, 'f': 0, 'fpr': 0},
+        'Dataset 224': {'tp|fn|tn|fp': '', 'accuracy': 0, 'precision': 0, 'recall': 0, 'f': 0, 'fpr': 0}
     }
 
     avaliacion = {
         'Dataset 32': None,
         'Dataset 64': None,
-        'Dataset 128': None
+        'Dataset 128': None,
+        'Dataset 224': None
     }
 
-    for dataset in ['32', '64', '128']:
+    for dataset in ['32', '64', '128', '224']:
         print('* Dataset de test {} *'.format(dataset))
 
         labels = []
