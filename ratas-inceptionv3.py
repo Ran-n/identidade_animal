@@ -190,10 +190,10 @@ if __name__ == '__main__':
     test_ds[str(ALTURA_IMAXE)] = remaining.skip(tamanho_valid_ds)
 
     # sacar os tests do resto, coa mesma cantidade de imaxes
-    # non poño 224 porque o ese test set sempre é o que collo primeiro
+    # non poño 150 porque o ese test set sempre é o que collo primeiro
     # pq non se pode adestrar con outro
     for ele in ['32', '64', '128']:
-        # non fai falla o if do ratas normal porque as dimensións 224 sempre van ser
+        # non fai falla o if do ratas normal porque as dimensións 150 sempre van ser
         # as primeiras en ser cargadas e non fai falla poñelas no bucle
         data_dir2 = tf.keras.utils.get_file(
                                    'Dataset_Ratas_'+str(ele)+'x'+str(ele),
