@@ -12,3 +12,6 @@ Script para o uso da rede Inceptionv3 sobre o conxunto de datos das ratas.
 
 ## ratas-resnet50.py
 Script para o uso da rede ResNet50 sobre o conxunto de datos das ratas.
+
+## cascudas.py
+Script para o uso da rede PecusCNN sobre o conxunto de datos das cascudas.
