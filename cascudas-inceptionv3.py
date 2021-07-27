@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------------------------
 #+ Autor:	Ran#
 #+ Creado:	16/06/2021 18:34:20
-#+ Editado:	27/07/2021 13:18:19
+#+ Editado:	27/07/2021 14:16:51
 #------------------------------------------------------------------------------------------------
 
 import sys
@@ -36,6 +36,7 @@ import numpy as np
 import sys
 import json
 import secrets
+import math
 
 import tensorflow as tf
 
@@ -315,7 +316,7 @@ if __name__=='__main__':
     x = layers.Flatten()(base_model.output)
     x = layers.Dense(1024, activation='relu')(x)
     x = layers.Dropout(0.2)(x)
-    x = layers.Dense(NUM_CLASES, activation='sigmoid')(x)
+    x = layers.Dense(len(nome_clases), activation='sigmoid')(x)
 
     modelo = tf.keras.models.Model(base_model.input, x)
     # CREACIÓN da rede Inceptionv3 #

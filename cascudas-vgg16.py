@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------------------------
 #+ Autor:	Ran#
 #+ Creado:	05/06/2021 17:06:17
-#+ Editado:	27/07/2021 13:35:46
+#+ Editado:	27/07/2021 14:16:44
 #------------------------------------------------------------------------------------------------
 
 import sys
@@ -36,6 +36,7 @@ import numpy as np
 import sys
 import json
 import secrets
+import math
 
 import tensorflow as tf
 
@@ -315,13 +316,13 @@ if __name__=='__main__':
     x = layers.Flatten(name = "flatten")(base_model.output)
     x = layers.Dense(512, activation='relu')(x)
     x = layers.Dropout(0.5)(x)
-    x = layers.Dense(NUM_CLASES)(x)
+    x = layers.Dense(len(nome_clases))(x)
 
     modelo = tf.keras.models.Model(inputs=base_model.input, outputs=x)
     # CREACIÓN da rede VGG16 #
 
     # compilar o modelo
-    model.compile(
+    modelo.compile(
         optimizer='adam',
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
         metrics=['accuracy']
