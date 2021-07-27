@@ -149,7 +149,6 @@ def medias_metricas_cascudas(dataset, metricas, metrica):
 
 #------------------------------------------------------------------------------------------------
 
-
 # main
 if __name__=='__main__':
     # ler as opcións de entrada
