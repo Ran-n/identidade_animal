@@ -200,7 +200,7 @@ if __name__=='__main__':
 
     # mostra a mensaxe de información sobre a configuración usada para a creación do modelo
     print('\nConfiguración a usar:')
-    print('----------------------------------')
+    print('---------------------------------------------------------------------------------------------------')
     print('nomenclatura:\t\t', NOMENCLATURA)
     print('dimensións:\t\t', DIMENSIONS)
     print('epochs:\t\t\t', EPOCHS)
@@ -208,7 +208,7 @@ if __name__=='__main__':
     print('cant clases:\t\t', len(nome_clases))
     print('semente:\t\t', SEMENTE)
     print('% train-val-test:\t {} - {} - {}'.format(CANTIDADES[0], CANTIDADES[1], CANTIDADES[2]))
-    print('----------------------------------')
+    print('---------------------------------------------------------------------------------------------------')
 
     # gardar os parámetros usados
     ficheiro.gardarJson(FICHEIRO+'.parametros',
@@ -311,7 +311,6 @@ if __name__=='__main__':
 
     for layer in base_model.layers:
         layer.trainable = False
-
 
     x = layers.Flatten(name = "flatten")(base_model.output)
     x = layers.Dense(512, activation='relu')(x)

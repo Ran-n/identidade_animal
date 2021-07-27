@@ -261,7 +261,7 @@ if __name__=='__main__':
     train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
     valid_ds = valid_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
-    # CREACIÓN da rede PecusCNN
+    # CREACIÓN da rede PecusCNN #
     modelo = Sequential([
         # as cores van do 0 ao 255, con isto fai que vaian do 0 ó 1
         # faise en todos pero tamén nestas en branco e negro polos todos de grises

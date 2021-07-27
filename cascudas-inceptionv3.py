@@ -200,7 +200,7 @@ if __name__=='__main__':
 
     # mostra a mensaxe de información sobre a configuración usada para a creación do modelo
     print('\nConfiguración a usar:')
-    print('----------------------------------')
+    print('---------------------------------------------------------------------------------------------------')
     print('nomenclatura:\t\t', NOMENCLATURA)
     print('dimensións:\t\t', DIMENSIONS)
     print('epochs:\t\t\t', EPOCHS)
@@ -208,7 +208,7 @@ if __name__=='__main__':
     print('cant clases:\t\t', len(nome_clases))
     print('semente:\t\t', SEMENTE)
     print('% train-val-test:\t {} - {} - {}'.format(CANTIDADES[0], CANTIDADES[1], CANTIDADES[2]))
-    print('----------------------------------')
+    print('---------------------------------------------------------------------------------------------------')
 
     # gardar os parámetros usados
     ficheiro.gardarJson(FICHEIRO+'.parametros',
@@ -243,7 +243,7 @@ if __name__=='__main__':
     # non poño 150 porque o ese test set sempre é o que collo primeiro
     # pq non se pode adestrar con outro
     for ele in ['32', '64', '128', '256']:
-        # non fai falla o if do ratas normal porque as dimensións 150 sempre van ser
+        # non fai falla o if do cascudas normal porque as dimensións 150 sempre van ser
         # as primeiras en ser cargadas e non fai falla poñelas no bucle
         data_dir2 = tf.keras.utils.get_file(
                                    'Dataset_Cascudas_'+str(ele)+'x'+str(ele),
@@ -316,7 +316,7 @@ if __name__=='__main__':
     x = layers.Flatten()(base_model.output)
     x = layers.Dense(1024, activation='relu')(x)
     x = layers.Dropout(0.2)(x)
-    x = layers.Dense(len(nome_clases), activation='sigmoid')(x)
+    x = layers.Dense(1, activation='sigmoid')(x)
 
     modelo = tf.keras.models.Model(base_model.input, x)
     # CREACIÓN da rede Inceptionv3 #

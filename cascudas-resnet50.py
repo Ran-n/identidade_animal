@@ -201,7 +201,7 @@ if __name__=='__main__':
 
     # mostra a mensaxe de información sobre a configuración usada para a creación do modelo
     print('\nConfiguración a usar:')
-    print('----------------------------------')
+    print('---------------------------------------------------------------------------------------------------')
     print('nomenclatura:\t\t', NOMENCLATURA)
     print('dimensións:\t\t', DIMENSIONS)
     print('epochs:\t\t\t', EPOCHS)
@@ -209,7 +209,7 @@ if __name__=='__main__':
     print('cant clases:\t\t', len(nome_clases))
     print('semente:\t\t', SEMENTE)
     print('% train-val-test:\t {} - {} - {}'.format(CANTIDADES[0], CANTIDADES[1], CANTIDADES[2]))
-    print('----------------------------------')
+    print('---------------------------------------------------------------------------------------------------')
 
     # gardar os parámetros usados
     ficheiro.gardarJson(FICHEIRO+'.parametros',
@@ -307,10 +307,10 @@ if __name__=='__main__':
     valid_ds = valid_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
     # CREACIÓN da rede ResNet50 #
-    model = ResNet50(input_shape=(224, 224,3), include_top=False, weights="imagenet")
-    model.summary()
+    base_model = ResNet50(input_shape=(224, 224,3), include_top=False, weights="imagenet")
+    base_model.summary()
 
-    for layer in model.layers:
+    for layer in base_model.layers:
         layer.trainable = False
 
     x = layers.Flatten(name = "flatten")(base_model.output)
