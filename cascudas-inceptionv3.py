@@ -312,7 +312,6 @@ if __name__=='__main__':
     for layer in base_model.layers:
         layer.trainable = False
 
-
     x = layers.Flatten()(base_model.output)
     x = layers.Dense(1024, activation='relu')(x)
     x = layers.Dropout(0.2)(x)

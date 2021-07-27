@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------------------------
 #+ Autor:   Ran#
 #+ Creado:  21/04/2021 12:24:52
-#+ Editado:	26/07/2021 19:00:20
+#+ Editado:	27/07/2021 23:01:58
 #------------------------------------------------------------------------------------------------
 
 import sys
@@ -256,11 +256,10 @@ if __name__ == '__main__':
 
     # CREACIÓN da rede Inceptionv3
     base_model = InceptionV3(input_shape = (150, 150, 3), include_top = False, weights = 'imagenet')
-    base_model.summary()
+    #base_model.summary()
 
     for layer in base_model.layers:
         layer.trainable = False
-
 
     x = layers.Flatten()(base_model.output)
     x = layers.Dense(1024, activation='relu')(x)
@@ -272,7 +271,7 @@ if __name__ == '__main__':
 
     # compilar o modelo
     modelo.compile(
-        optimizer = tf.keras.optimizers.RMSprop(lr=0.0001),
+        optimizer = tf.keras.optimizers.RMSprop(learning_rate=0.0001),
         loss = 'binary_crossentropy',
         metrics = ['acc'])
 
