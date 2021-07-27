@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------------------------
 #+ Autor:	Ran#
 #+ Creado:	03/06/2021 14:12:59
-#+ Editado:	26/07/2021 22:46:16
+#+ Editado:	27/07/2021 13:20:01
 #------------------------------------------------------------------------------------------------
 
 import sys
@@ -17,6 +17,7 @@ if ('-a' in __args) or ('-h' in __args) or ('?' in __args) or ('-?' in __args) o
     print('\nAxuda -----------')
     print('-h/-a/?\t\t-> Para esta mensaxe')
     print()
+    print('-d num\t\t-> dimensións\t\t\t\t\t(32x32)')
     print('-e num\t\t-> epochs\t\t\t\t\t(20)')
     print('-b num\t\t-> batch size\t\t\t\t\t(32)')
     print('-v num\t\t-> Distribución dos % train-val-test\t\t(80-10-10)')
