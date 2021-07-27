@@ -154,7 +154,7 @@ if __name__=='__main__':
     # ler as opcións de entrada
     DIMENSIONS, ALTURA_IMAXE, ANCHURA_IMAXE, EPOCHS, BATCH_SIZE, CANTIDADES, SEMENTE = lecturaOpcions(__args)
     NOMENCLATURA = 'dataset-cascudas_'+nomenclar(ALTURA_IMAXE)+';epochs_'+nomenclar(EPOCHS)+';batch-size_'+nomenclar(BATCH_SIZE)+';semente_'+nomenclar(SEMENTE)+'___'+str(secrets.token_hex(4))
-    CARPETA = 'saidas/cascudas_inceptionv3/'+NOMENCLATURA
+    CARPETA = 'saidas/cascudas_vgg16/'+NOMENCLATURA
     FICHEIRO = CARPETA+'/'+NOMENCLATURA
     
     # dicc cos distintos datasets de proba a usar
