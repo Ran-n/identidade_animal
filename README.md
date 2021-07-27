@@ -15,3 +15,12 @@ Script para o uso da rede ResNet50 sobre o conxunto de datos das ratas.
 
 ## cascudas.py
 Script para o uso da rede PecusCNN sobre o conxunto de datos das cascudas.
+
+## cascudas-vgg16.py
+Script para o uso da rede VGG16 sobre o conxunto de datos das cascudas.
+
+## cascudas-inceptionv3.py
+Script para o uso da rede Inceptionv3 sobre o conxunto de datos das cascudas.
+
+## cascudas-resnet50.py
+Script para o uso da rede ResNet50 sobre o conxunto de datos das cascudas.
