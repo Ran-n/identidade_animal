@@ -1,5 +1,6 @@
-*.7z
-*.contrasinal
 saidas/*
 metricas/*
+*.7z
+*.contrasinal
+*.csv
 r2.sh
