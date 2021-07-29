@@ -107,7 +107,7 @@ def lecturaOpcions(args):
 # main
 if __name__ == '__main__':
     DIMENSIONS, ALTURA_IMAXE, ANCHURA_IMAXE, EPOCHS, BATCH_SIZE, CANTIDADES, SEMENTE = lecturaOpcions(__args)
-    NOMENCLATURA = 'dataset-ratas_'+nomenclar(ALTURA_IMAXE)+';epochs_'+nomenclar(EPOCHS)+';batch-size_'+nomenclar(BATCH_SIZE)+';semente_'+nomenclar(SEMENTE)+'___'+str(secrets.token_hex(4))
+    NOMENCLATURA = 'dataset-ratas-resnet50_'+nomenclar(ALTURA_IMAXE)+';epochs_'+nomenclar(EPOCHS)+';batch-size_'+nomenclar(BATCH_SIZE)+';semente_'+nomenclar(SEMENTE)+'___'+str(secrets.token_hex(4))
     CARPETA = 'saidas/ratas_resnet50/'+NOMENCLATURA
     FICHEIRO = CARPETA+'/'+NOMENCLATURA
     

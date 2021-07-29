@@ -160,7 +160,7 @@ def medias_metricas_cascudas(dataset, metricas, metrica):
 if __name__=='__main__':
     # ler as opcións de entrada
     DIMENSIONS, ALTURA_IMAXE, ANCHURA_IMAXE, EPOCHS, BATCH_SIZE, CANTIDADES, SEMENTE = lecturaOpcions(__args)
-    NOMENCLATURA = 'dataset-cascudas_'+nomenclar(ALTURA_IMAXE)+';epochs_'+nomenclar(EPOCHS)+';batch-size_'+nomenclar(BATCH_SIZE)+';semente_'+nomenclar(SEMENTE)+'___'+str(secrets.token_hex(4))
+    NOMENCLATURA = 'dataset-cascudas-pecusCNN_'+nomenclar(ALTURA_IMAXE)+';epochs_'+nomenclar(EPOCHS)+';batch-size_'+nomenclar(BATCH_SIZE)+';semente_'+nomenclar(SEMENTE)+'___'+str(secrets.token_hex(4))
     CARPETA = 'saidas/cascudas_pecusCNN/'+NOMENCLATURA
     FICHEIRO = CARPETA+'/'+NOMENCLATURA
     
@@ -204,7 +204,7 @@ if __name__=='__main__':
 
     # mostra a mensaxe de información sobre a configuración usada para a creación do modelo
     print('\nConfiguración a usar:')
-    print('----------------------------------')
+    print('---------------------------------------------------------------------------------------------------')
     print('nomenclatura:\t\t', NOMENCLATURA)
     print('dimensións:\t\t', DIMENSIONS)
     print('epochs:\t\t\t', EPOCHS)
@@ -212,7 +212,7 @@ if __name__=='__main__':
     print('cant clases:\t\t', len(nome_clases))
     print('semente:\t\t', SEMENTE)
     print('% train-val-test:\t {} - {} - {}'.format(CANTIDADES[0], CANTIDADES[1], CANTIDADES[2]))
-    print('----------------------------------')
+    print('---------------------------------------------------------------------------------------------------')
 
     # gardar os parámetros usados
     ficheiro.gardarJson(FICHEIRO+'.parametros',
