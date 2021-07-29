@@ -3,7 +3,7 @@
 #+ Autor:	Ran#
 #+ Creado:	01/05/2021 16:30:52
 #+ Creado:	05/06/2021 18:51:59
-#+ Editado:	29/07/2021 14:35:30
+#+ Editado:	29/07/2021 20:29:10
 #-----------------------------------------------------------
 import os
 import sys
@@ -548,6 +548,9 @@ def main():
 		# gardamos o contido no ficheiro
 		gardar_csv(path_inicial+'/'+fich_saida+'_cascudas.csv', contido_csv_cascudas)
 
+#-----------------------------------------------------------
+
 if __name__ == '__main__':
 	main()
+
 #-----------------------------------------------------------
