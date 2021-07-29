@@ -24,3 +24,9 @@ Script para o uso da rede Inceptionv3 sobre o conxunto de datos das cascudas.
 
 ## cascudas-resnet50.py
 Script para o uso da rede ResNet50 sobre o conxunto de datos das cascudas.
+
+## ms2csv.py
+Script de amalgama e ordeamento dos datos contidos nos ficheiros de métricas.
+
+## mktaboas.py
+Script que devolve a mu e sigma para os valores dos csv das ratas e cascudas.
