@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------------------------
 #+ Autor:	Ran#
 #+ Creado:	03/06/2021 14:12:59
-#+ Editado:	27/07/2021 13:20:01
+#+ Editado:	29/07/2021 14:12:26
 #------------------------------------------------------------------------------------------------
 
 import sys
@@ -494,6 +494,7 @@ if __name__=='__main__':
                         'accuracy': 0, 'precision': 0, 'recall': 0, 'f': 0, 'fpr': 0
                       },
                       'micro': {
+                        'tp|fn|tn|fp': '',
                         'accuracy': 0, 'precision': 0, 'recall': 0, 'f': 0, 'fpr': 0
                       }
             }
@@ -507,6 +508,7 @@ if __name__=='__main__':
                         'accuracy': 0, 'precision': 0, 'recall': 0, 'f': 0, 'fpr': 0
                       },
                       'micro': {
+                        'tp|fn|tn|fp': '',
                         'accuracy': 0, 'precision': 0, 'recall': 0, 'f': 0, 'fpr': 0
                       }
             }
@@ -520,6 +522,7 @@ if __name__=='__main__':
                         'accuracy': 0, 'precision': 0, 'recall': 0, 'f': 0, 'fpr': 0
                       },
                       'micro': {
+                        'tp|fn|tn|fp': '',
                         'accuracy': 0, 'precision': 0, 'recall': 0, 'f': 0, 'fpr': 0
                       }
             }
@@ -533,6 +536,7 @@ if __name__=='__main__':
                         'accuracy': 0, 'precision': 0, 'recall': 0, 'f': 0, 'fpr': 0
                       },
                       'micro': {
+                        'tp|fn|tn|fp': '',
                         'accuracy': 0, 'precision': 0, 'recall': 0, 'f': 0, 'fpr': 0
                       }
             }
@@ -666,6 +670,8 @@ if __name__=='__main__':
         fn = a_fn+b_fn+c_fn
         tn = a_tn+b_tn+c_tn
         fp = a_fp+b_fp+c_fp
+
+        metricas['Dataset '+dataset]['total']['micro']['tp|fn|tn|fp'] = str(tp)+'|'+str(fn)+'|'+str(tn)+'|'+str(fp)
 
         metricas['Dataset '+dataset]['total']['micro']['accuracy'] = (tp+tn)/(tp+tn+fp+fn) if tp+tn+fp+fn else 0
         metricas['Dataset '+dataset]['total']['micro']['precision'] = precision =  tp/(tp+fp) if tp+fp else 0
