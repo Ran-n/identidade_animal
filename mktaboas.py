@@ -33,7 +33,6 @@ def main(csv_ratas, csv_cascudas):
 	# lemos as entradas por liña de comandos
 	# se pide axuda mostramola e saimos
 	if any(['-a' in args, '-h' in args, '?' in args, len(args) == 0, all(['-r' not in args, '-rtl' not in args, '-c' not in args,'-ctl' not in args])]):
-		print(args)
 		mensaxe_axuda()
 		sys.exit()
 
