@@ -338,7 +338,7 @@ if __name__=='__main__':
     )
 
     # mostra a información sobre o modelo
-    modelo.summary()
+    #modelo.summary()
 
     print()
     print('* Adestrando *')

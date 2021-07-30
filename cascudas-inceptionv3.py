@@ -323,7 +323,7 @@ if __name__=='__main__':
     # compilar o modelo
     modelo.compile(
         optimizer = tf.keras.optimizers.RMSprop(lr=0.0001),
-        loss = 'binary_crossentropy',
+        loss = 'categorical_crossentropy',
         metrics = ['acc']
     )
 
