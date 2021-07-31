@@ -3,7 +3,7 @@
 #-----------------------------------------------------------------
 #+ Autor:	Ran#
 #+ Creado:	09/06/2021 20:08:14
-#+ Editado:	31/07/2021 13:14:09
+#+ Editado:	31/07/2021 13:20:22
 #-----------------------------------------------------------------
 
 import seaborn as sns
@@ -163,7 +163,7 @@ def main(carpeta, paleta, csv_ratas, csv_cascudas):
 			'Mapa de calor granulado das métricas do dataset das cascudas', xtit='Métricas', xticklabels=metricas_ratas)
 
 	lineplot(carpeta+'04-lineplot_acc_epochs-ratas', datos=ratas_500, metrica='accuracy', tipo='epoch', colorscheme=paleta)
-	lineplot(carpeta+'04-lineplot_acc_epochs-ratas2', datos=ratas_30, metrica='accuracy', tipo='epoch', colorscheme=paleta)
+	#lineplot(carpeta+'04-lineplot_acc_epochs-ratas2', datos=ratas_30, metrica='accuracy', tipo='epoch', colorscheme=paleta)
 	lineplot(carpeta+'05-lineplot_acc_batch-ratas', datos=ratas, metrica='accuracy', tipo='batch', colorscheme=paleta)
 
 	lineplot(carpeta+'06-lineplot_acc_epochs-cascudas', datos=cascudas_100, metrica='macro accuracy', tipo='epoch', colorscheme=paleta)
