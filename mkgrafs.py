@@ -94,20 +94,15 @@ def lineplot(nome, datos, metrica, tipo, colorscheme, extensions=['.svg', '.png'
 		plt.xlabel('$\\it{}$'.format('Epoch'))
 		plt.legend(loc='lower right')
 		
+		eixo_x = [1,3,5,7,9,12,15,20,25,30,35,40,45,50]
 		if list(td_cols) == [32, 64, 128]:
-			if datos['epoch'].max() == 30:
-				plt.xticks([1,3,5,7,9,15,20,25,30])
-				plt.xlim([0.7,30.1])
-			else:
-				#plt.xticks([1,3,5,7,9,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100])
-				eixo_x = [1,3,5,7,9,15,20,25,30,35,40,45,50]
-				plt.xticks(eixo_x)
-				plt.xlim([0.1,eixo_x[-1]+0.1])
+			#plt.xticks([1,3,5,7,9,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100])
+			plt.xticks(eixo_x)
+			plt.xlim([0.1,eixo_x[-1]+0.2])
 		elif list(td_cols) == [32, 64, 128, 256]:
 			#plt.xticks([1,2,3,4,5,10,15,20,25,30,35,40,45,50,55,60])
-			eixo_x = [1,3,5,7,9,15,20,25,30,35,40,45,50]
 			plt.xticks(eixo_x)
-			plt.xlim([0.7,eixo_x[-1]+0.1])
+			plt.xlim([0.7,eixo_x[-1]+0.2])
 
 	elif tipo == 'batch size':
 		if list(td_cols) == [32, 64, 128]:
