@@ -3,7 +3,7 @@
 #-----------------------------------------------------------------
 #+ Autor:	Ran#
 #+ Creado:	09/06/2021 20:08:14
-#+ Editado:	31/07/2021 12:58:16
+#+ Editado:	31/07/2021 13:14:09
 #-----------------------------------------------------------------
 
 import seaborn as sns
@@ -173,10 +173,7 @@ def main(carpeta, paleta, csv_ratas, csv_cascudas):
 
 if __name__ == '__main__':
 	carpeta = 'graficas/'
-	try:
-		os.mkdir(carpeta)
-	except:
-		pass
+	if not os.path.exists(carpeta): os.mkdir(carpeta)
 
 	paleta_cb8 = ['#00429d', '#316292', '#3c8385', '#36a476', '#fab5a0', '#fe6843', '#dc0000', '#8f0000']
 	paleta_cb4 = ['#00429d', '#3c8385', '#fe6843', '#8f0000']
