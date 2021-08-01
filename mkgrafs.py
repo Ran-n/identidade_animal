@@ -107,10 +107,10 @@ def lineplot(nome, datos, metrica, tipo, colorscheme, extensions=['.svg', '.png'
 	elif tipo == 'batch size':
 		if list(td_cols) == [32, 64, 128]:
 			plt.legend(loc='upper right')
-			plt.xticks([8,32,64,128,256])
+			plt.xticks([8,16,32,64,128,256])
 		elif list(td_cols) == [32, 64, 128, 256]:
 			plt.legend(loc='lower left')
-			plt.xticks([8,32,64,128,256])
+			plt.xticks([8,16,32,64,128,256])
 		plt.xlim([7,256.5])
 
 		plt.xlabel('$\\it{}$ $\\it{}$'.format('Batch', 'Size'))
