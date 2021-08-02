@@ -59,9 +59,9 @@ def lineplot(nome, datos, metrica, tipo, colorscheme, extensions=['.svg', '.png'
 	elif tipo == 'batch':
 		tipo = 'batch size'
 		if metrica == 'macro accuracy':
-			plt.title('{} das cascudas segundo o tamaño dos lotes'.format('Macro-Accuracy'))
-		elif metrica == 'micro accuracy':
 			plt.title('$\\it{}$ das cascudas segundo o tamaño dos lotes'.format('Macro-Accuracy'))
+		elif metrica == 'micro accuracy':
+			plt.title('$\\it{}$ das cascudas segundo o tamaño dos lotes'.format('Micro-Accuracy'))
 		elif metrica == 'f' or metrica == 'fpr':
 			plt.title('{} segundo o tamaño dos lotes'.format(metrica.upper()))
 		else:
